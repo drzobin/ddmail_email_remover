@@ -1,11 +1,14 @@
 class Prod():
-    WTF_CSRF_SECRET_KEY = 'change_me'
     SECRET_KEY = 'change_me'
+    PASSWORD_HASH = 'change_me'
+    EMAIL_ACCOUNT_PATH = '/var/mail/vhosts/'
 
 class Test():
-    WTF_CSRF_SECRET_KEY = 'change_me'
     SECRET_KEY = 'change_me'
+    PASSWORD_HASH = 'change_me'
+    EMAIL_ACCOUNT_PATH = '/var/mail/vhosts/'
 
 class Dev():
-    WTF_CSRF_SECRET_KEY = 'change_me'
     SECRET_KEY = 'change_me'
+    PASSWORD_HASH = 'change_me'
+    EMAIL_ACCOUNT_PATH = '/var/mail/vhosts/'
