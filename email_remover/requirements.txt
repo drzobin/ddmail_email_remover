@@ -1,0 +1,6 @@
+flask
+Flask-WTF
+argon2_cffi
+pytest
+coverage
+gunicorn
