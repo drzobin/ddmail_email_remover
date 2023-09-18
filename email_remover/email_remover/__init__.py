@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from flask_wtf.csrf import CSRFProtect
 
 
 def create_app(test_config=None):
@@ -20,8 +19,6 @@ def create_app(test_config=None):
         exit(1)
     
     app.secret_key = app.config["SECRET_KEY"]
-    app.WTF_CSRF_SECRET_KEY = app.config["WTF_CSRF_SECRET_KEY"]
-    csrf = CSRFProtect(app)
 
     # Ensure the instance folder exists
     try:
