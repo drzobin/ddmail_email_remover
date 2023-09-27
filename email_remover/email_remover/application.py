@@ -64,5 +64,4 @@ def main():
 
         # Remove email folder from hdd.
         shutil.rmtree(email_path)
-        print("removing")
-    return "done"
+            return "done"
