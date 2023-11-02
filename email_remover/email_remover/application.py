@@ -66,6 +66,20 @@ def main():
         if os.path.isdir(email_path) != True:
             return "done"
 
+        rm = "/usr/bin/rm"
+
+        # Check that rm exist.
+        if os.path.exists(rm) != True:
+            return "error: rm location is wrong"
+
         # Remove email folder from hdd.
-        shutil.rmtree(email_path)
+        try:
+            output = subprocess.run(["/usr/bin/doas",rm,"-rf",email_path], check=True)
+            if output.returncode != 0:
+                return "error: returncode of cmd rm is non zero"
+        except subprocess.CalledProcessError as e:
+            return "error: returncode of cmd rm is non zero"
+        except:
+            return "error: unkonwn exception running subprocess"
+
         return "done"
