@@ -2,6 +2,7 @@ from flask import Blueprint, current_app, request
 from argon2 import PasswordHasher
 import os
 import shutil
+import time
 
 from email_remover.validators import is_domain_allowed, is_password_allowed, is_email_allowed
 
@@ -46,9 +47,12 @@ def main():
         # Check if password is correct.
         try:
             if ph.verify(current_app.config["PASSWORD_HASH"], password) != True:
+                time.sleep(1)
                 return "done"
         except:
+            time.sleep(1)
             return "done"
+        time.sleep(1)
 
         # Split email and verify domain.
         splitted_email_domain = email.split('@')
