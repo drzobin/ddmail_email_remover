@@ -17,7 +17,7 @@ def hash_data():
 
         # Validate password.
         if is_password_allowed(data) != True:
-            return "error"
+            return "error: password validation failed"
 
         data_hash = ph.hash(data)
 
@@ -34,37 +34,37 @@ def main():
 
         # Validate password.
         if is_password_allowed(password) != True:
-            return "done"
+            return "error: password validation failed"
 
         # Validate domain.
         if is_domain_allowed(domain) != True:
-            return "done"
+            return "error: domain validation failed"
 
         # Validate email.
         if is_email_allowed(email) != True:
-            return "done"
+            return "error: email validation failed"
 
         # Check if password is correct.
         try:
             if ph.verify(current_app.config["PASSWORD_HASH"], password) != True:
                 time.sleep(1)
-                return "done"
+                return "error: wrong password"
         except:
             time.sleep(1)
-            return "done"
+            return "error: wrong password"
         time.sleep(1)
 
         # Split email and verify domain.
         splitted_email_domain = email.split('@')
         if splitted_email_domain[1] != domain:
-            return "done"
+            return "error: email adress domain do not match domain"
 
         # Path to email folder on disc.
         email_path = current_app.config["EMAIL_ACCOUNT_PATH"] + "/" + domain + "/" + splitted_email_domain[0]
 
-        # Check if email folder exsist.
+        # Check if email folder excist.
         if os.path.isdir(email_path) != True:
-            return "done"
+            return "error: email folder do not excist"
 
         rm = "/usr/bin/rm"
 
