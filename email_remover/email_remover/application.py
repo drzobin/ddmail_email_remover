@@ -73,11 +73,6 @@ def main():
         # Path to email folder on disc.
         email_path = current_app.config["EMAIL_ACCOUNT_PATH"] + "/" + domain + "/" + splitted_email_domain[0]
 
-        # Check if email folder excist.
-        if os.path.isdir(email_path) != True:
-            logging.error("main() email account folder do not excist")
-            return "error: email account folder do not excist"
-    
         # location of rm binary.
         rm = "/usr/bin/rm"
 
