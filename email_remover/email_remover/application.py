@@ -10,7 +10,7 @@ from email_remover.validators import is_domain_allowed, is_password_allowed, is_
 bp = Blueprint("application", __name__, url_prefix="/")
 
 # Configure logging.
-logging.basicConfig(filename="/tmp/ddmail_email_remover.log", format='%(asctime)s: %(levelname)s: %(message)s', level=logging.ERROR)
+logging.basicConfig(filename="/var/log/ddmail_email_remover.log", format='%(asctime)s: %(levelname)s: %(message)s', level=logging.ERROR)
 
 @bp.route("/hash_data", methods=["POST"])
 def hash_data():
