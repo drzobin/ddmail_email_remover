@@ -1,4 +1,4 @@
-# What is ddmail_remover
+# What is ddmail_email_remover
 Web application API for removing email accounts on disc for the ddmail project.
 
 # What is ddmail
