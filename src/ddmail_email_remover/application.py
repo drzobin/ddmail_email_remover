@@ -12,22 +12,6 @@ bp = Blueprint("application", __name__, url_prefix="/")
 # Configure logging.
 logging.basicConfig(filename="/var/log/ddmail_email_remover.log", format='%(asctime)s: %(levelname)s: %(message)s', level=logging.ERROR)
 
-@bp.route("/hash_data", methods=["POST"])
-def hash_data():
-    if request.method == 'POST':
-        ph = PasswordHasher()
-
-        data = request.form.get('data')
-
-        # Validate password.
-        if validators.is_password_allowed(data) != True:
-            logging.error("hash_data() password validation failed")
-            return "error: password validation failed"
-
-        data_hash = ph.hash(data)
-
-        return data_hash
-
 @bp.route("/", methods=["POST"])
 def main():
     if request.method == 'POST':
