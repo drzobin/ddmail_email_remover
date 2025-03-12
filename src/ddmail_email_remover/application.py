@@ -5,8 +5,7 @@ import shutil
 import time
 import subprocess
 import logging
-
-from email_remover.validators import is_domain_allowed, is_password_allowed, is_email_allowed
+import ddmail_validators.validators as validators
 
 bp = Blueprint("application", __name__, url_prefix="/")
 
@@ -21,7 +20,7 @@ def hash_data():
         data = request.form.get('data')
 
         # Validate password.
-        if is_password_allowed(data) != True:
+        if validators.is_password_allowed(data) != True:
             logging.error("hash_data() password validation failed")
             return "error: password validation failed"
 
@@ -39,17 +38,17 @@ def main():
         email = request.form.get('email')
 
         # Validate password.
-        if is_password_allowed(password) != True:
+        if validators.is_password_allowed(password) != True:
             logging.error("main() password validation failed")
             return "error: password validation failed"
 
         # Validate domain.
-        if is_domain_allowed(domain) != True:
+        if validators.is_domain_allowed(domain) != True:
             logging.error("main() domain validation failed")
             return "error: domain validation failed"
 
         # Validate email.
-        if is_email_allowed(email) != True:
+        if validators.is_email_allowed(email) != True:
             logging.error("main() domain validation failed")
             return "error: email validation failed"
 
