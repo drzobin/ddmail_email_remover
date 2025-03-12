@@ -1,4 +1,2 @@
 .coverage
-email_remover/__pycache__/
-email_remover/email_remover/__pycache__/
-email_remover/tests/__pycache__/
+__pycache__/
