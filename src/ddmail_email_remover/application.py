@@ -1,10 +1,11 @@
-from flask import Blueprint, current_app, request
-from argon2 import PasswordHasher
 import os
 import shutil
 import time
 import subprocess
 import logging
+from flask import Blueprint, current_app, request
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 import ddmail_validators.validators as validators
 
 bp = Blueprint("application", __name__, url_prefix="/")
@@ -42,9 +43,9 @@ def main():
                 time.sleep(1)
                 logging.error("main() wrong password")
                 return "error: wrong password"
-        except:
+        except VerifyMismatchError:
             time.sleep(1)
-            logging.error("main() wrong password")
+            logging.error("main() exceptions VerifyMismatchError, wrong password")
             return "error: wrong password"
         time.sleep(1)
 
