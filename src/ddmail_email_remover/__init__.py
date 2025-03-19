@@ -7,11 +7,11 @@ from logging.config import dictConfig
 from logging import FileHandler
 
 
-def create_app(config_file = None, test_config = None):
+def create_app(config_file=None, test_config=None):
     """Create and configure an instance of the Flask application ddmail_email_remover."""
 
     # Configure logging.
-    log_format =  '[%(asctime)s] %(levelname)s in %(module)s %(funcName)s %(lineno)s: %(message)s'
+    log_format = '[%(asctime)s] %(levelname)s in %(module)s %(funcName)s %(lineno)s: %(message)s'
     dictConfig({
         'version': 1,
         'formatters': {'default': {
@@ -44,7 +44,7 @@ def create_app(config_file = None, test_config = None):
         toml_config = toml.load(f)
 
     # Set app configurations from toml config file.
-    mode=os.environ.get('MODE')
+    mode = os.environ.get('MODE')
     print("Running in MODE: " + mode)
     if mode == "PRODUCTION":
         app.config["SECRET_KEY"] = toml_config["PRODUCTION"]["SECRET_KEY"]
@@ -52,7 +52,7 @@ def create_app(config_file = None, test_config = None):
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config["PRODUCTION"]["EMAIL_ACCOUNT_PATH"]
 
         # Configure logging.
-        file_handler = FileHandler(filename = toml_config["PRODUCTION"]["LOGFILE"])
+        file_handler = FileHandler(filename=toml_config["PRODUCTION"]["LOGFILE"])
         file_handler.setFormatter(logging.Formatter(log_format))
         app.logger.addHandler(file_handler)
     elif mode == "TESTING":
@@ -61,7 +61,7 @@ def create_app(config_file = None, test_config = None):
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config["TESTING"]["EMAIL_ACCOUNT_PATH"]
 
         # Configure logging.
-        file_handler = FileHandler(filename = toml_config["TESTING"]["LOGFILE"])
+        file_handler = FileHandler(filename=toml_config["TESTING"]["LOGFILE"])
         file_handler.setFormatter(logging.Formatter(log_format))
         app.logger.addHandler(file_handler)
     elif mode == "DEVELOPMENT":
@@ -70,7 +70,7 @@ def create_app(config_file = None, test_config = None):
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config["DEVELOPMENT"]["EMAIL_ACCOUNT_PATH"]
 
         # Configure logging.
-        file_handler = FileHandler(filename = toml_config["DEVELOPMENT"]["LOGFILE"])
+        file_handler = FileHandler(filename=toml_config["DEVELOPMENT"]["LOGFILE"])
         file_handler.setFormatter(logging.Formatter(log_format))
         app.logger.addHandler(file_handler)
     else:
@@ -89,4 +89,4 @@ def create_app(config_file = None, test_config = None):
     from ddmail_email_remover import application
     app.register_blueprint(application.bp)
 
-    return app 
+    return app
