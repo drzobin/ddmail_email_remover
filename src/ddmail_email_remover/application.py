@@ -58,7 +58,7 @@ def main():
         rm = "/usr/bin/rm"
 
         # Check that rm exist.
-        if os.path.exists(rm) != True:
+        if os.path.exists(rm) is not True:
             current_app.logger.error("rm binary location is wrong")
             return "error: rm binary location is wrong"
 
