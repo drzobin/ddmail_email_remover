@@ -2,17 +2,20 @@ import os
 import sys
 import toml
 from flask import Flask
+import logging
 from logging.config import dictConfig
+from logging import FileHandler
 
 
 def create_app(config_file = None, test_config = None):
     """Create and configure an instance of the Flask application ddmail_email_remover."""
 
     # Configure logging.
+    log_format =  '[%(asctime)s] %(levelname)s in %(module)s %(funcName)s %(lineno)s: %(message)s'
     dictConfig({
         'version': 1,
         'formatters': {'default': {
-            'format': '[%(asctime)s] %(levelname)s in %(module)s %(funcName)s %(lineno)s: %(message)s',
+            'format': log_format
         }},
         'handlers': {
             'wsgi': {
@@ -20,15 +23,10 @@ def create_app(config_file = None, test_config = None):
                 'stream': 'ext://flask.logging.wsgi_errors_stream',
                 'formatter': 'default',
             },
-            "file": {
-                "class": "logging.FileHandler",
-                "filename": "/var/log/ddmail_email_remover.log",
-                "formatter": "default",
-            },
         },
         'root': {
             'level': 'INFO',
-            'handlers': ['wsgi', 'file']
+            'handlers': ['wsgi']
         }
     })
 
@@ -52,14 +50,29 @@ def create_app(config_file = None, test_config = None):
         app.config["SECRET_KEY"] = toml_config["PRODUCTION"]["SECRET_KEY"]
         app.config["PASSWORD_HASH"] = toml_config["PRODUCTION"]["PASSWORD_HASH"]
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config["PRODUCTION"]["EMAIL_ACCOUNT_PATH"]
+
+        # Configure logging.
+        file_handler = FileHandler(filename = toml_config["PRODUCTION"]["LOGFILE"])
+        file_handler.setFormatter(logging.Formatter(log_format))
+        app.logger.addHandler(file_handler)
     elif mode == "TESTING":
         app.config["SECRET_KEY"] = toml_config["TESTING"]["SECRET_KEY"]
         app.config["PASSWORD_HASH"] = toml_config["TESTING"]["PASSWORD_HASH"]
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config["TESTING"]["EMAIL_ACCOUNT_PATH"]
+
+        # Configure logging.
+        file_handler = FileHandler(filename = toml_config["TESTING"]["LOGFILE"])
+        file_handler.setFormatter(logging.Formatter(log_format))
+        app.logger.addHandler(file_handler)
     elif mode == "DEVELOPMENT":
         app.config["SECRET_KEY"] = toml_config["DEVELOPMENT"]["SECRET_KEY"]
         app.config["PASSWORD_HASH"] = toml_config["DEVELOPMENT"]["PASSWORD_HASH"]
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config["DEVELOPMENT"]["EMAIL_ACCOUNT_PATH"]
+
+        # Configure logging.
+        file_handler = FileHandler(filename = toml_config["DEVELOPMENT"]["LOGFILE"])
+        file_handler.setFormatter(logging.Formatter(log_format))
+        app.logger.addHandler(file_handler)
     else:
         print("Error: you need to set env variabel MODE to PRODUCTION/TESTING/DEVELOPMENT")
         sys.exit(1)
