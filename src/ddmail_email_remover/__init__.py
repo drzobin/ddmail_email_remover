@@ -12,7 +12,7 @@ def create_app(config_file = None, test_config = None):
     dictConfig({
         'version': 1,
         'formatters': {'default': {
-            'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+            'format': '[%(asctime)s] %(levelname)s in %(module)s %(funcName)s %(lineno)s: %(message)s',
         }},
         'handlers': {
             'wsgi': {
@@ -28,7 +28,7 @@ def create_app(config_file = None, test_config = None):
         },
         'root': {
             'level': 'INFO',
-            'handlers': ['wsgi']
+            'handlers': ['wsgi', 'file']
         }
     })
 
