@@ -1,5 +1,4 @@
 import os
-import shutil
 import time
 import subprocess
 from flask import Blueprint, current_app, request
