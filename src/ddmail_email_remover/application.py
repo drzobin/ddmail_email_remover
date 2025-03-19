@@ -68,12 +68,9 @@ def main():
             if output.returncode != 0:
                 current_app.logger.error("returncode of cmd rm is non zero")
                 return "error: returncode of cmd rm is non zero"
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError:
             current_app.logger.error("returncode of cmd rm is non zero")
             return "error: returncode of cmd rm is non zero"
-        except:
-            current_app.logger.error("unkonwn exception running subprocess")
-            return "error: unkonwn exception running subprocess"
 
         current_app.logger.info("done")
         return "done"
