@@ -1,8 +1,6 @@
 import os
 import tempfile
-
 import pytest
-
 from ddmail_email_remover import create_app
 
 # Set mode to TESTING so we are sure not to run with production configuration running tests.
