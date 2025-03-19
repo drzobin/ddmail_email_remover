@@ -41,7 +41,7 @@ def main():
                 return "error: wrong password"
         except VerifyMismatchError:
             time.sleep(1)
-            current_app.logger.error("exceptions VerifyMismatchError, wrong password")
+            current_app.logger.error("VerifyMismatchError, wrong password")
             return "error: wrong password"
         time.sleep(1)
 
@@ -64,7 +64,10 @@ def main():
 
         # Remove email folder from hdd.
         try:
-            output = subprocess.run(["/usr/bin/doas", "-u", "vmail", rm, "-rf", email_path], check=True)
+            output = subprocess.run(
+                    ["/usr/bin/doas", "-u", "vmail", rm, "-rf", email_path],
+                    check=True
+                    )
             if output.returncode != 0:
                 current_app.logger.error("returncode of cmd rm is non zero")
                 return "error: returncode of cmd rm is non zero"
