@@ -8,6 +8,7 @@ import ddmail_validators.validators as validators
 
 bp = Blueprint("application", __name__, url_prefix="/")
 
+
 @bp.route("/", methods=["POST"])
 def main():
     if request.method == 'POST':
@@ -18,23 +19,23 @@ def main():
         email = request.form.get('email')
 
         # Validate password.
-        if validators.is_password_allowed(password) != True:
+        if validators.is_password_allowed(password) is not True:
             current_app.logger.error("password validation failed")
             return "error: password validation failed"
 
         # Validate domain.
-        if validators.is_domain_allowed(domain) != True:
+        if validators.is_domain_allowed(domain) is not True:
             current_app.logger.error("domain validation failed")
             return "error: domain validation failed"
 
         # Validate email.
-        if validators.is_email_allowed(email) != True:
+        if validators.is_email_allowed(email) is not True:
             current_app.logger.error("domain validation failed")
             return "error: email validation failed"
 
         # Check if password is correct.
         try:
-            if ph.verify(current_app.config["PASSWORD_HASH"], password) != True:
+            if ph.verify(current_app.config["PASSWORD_HASH"], password) is not True:
                 time.sleep(1)
                 current_app.logger.error("wrong password")
                 return "error: wrong password"
