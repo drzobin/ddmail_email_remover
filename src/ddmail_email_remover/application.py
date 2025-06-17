@@ -10,6 +10,37 @@ bp = Blueprint("application", __name__, url_prefix="/")
 
 @bp.route("/", methods=["POST"])
 def main() -> Response:
+    """
+    Processes a request to remove an email account from the system.
+    
+    This function handles a POST request containing email account information and authentication.
+    It validates the inputs, verifies the password against a stored hash, and then 
+    removes the specified email directory from the filesystem using subprocess commands.
+    
+    Returns:
+        Response: A Flask response object containing a success message if deletion was successful,
+                 or an error message describing the issue encountered.
+    
+    Request Form Parameters:
+        password (str): The password for authentication
+        domain (str): The domain part of the email address
+        email (str): The complete email address to be removed
+    
+    Error Responses:
+        "error: password is none": If the password parameter is missing
+        "error: domain is none": If the domain parameter is missing
+        "error: email is none": If the email parameter is missing
+        "error: password validation failed": If the password doesn't meet validation requirements
+        "error: domain validation failed": If the domain format is invalid
+        "error: email validation failed": If the email format is invalid
+        "error: wrong password": If the provided password doesn't match the stored hash
+        "error: email adress domain do not match domain": If the domain in the email doesn't match the domain parameter
+        "error: rm binary location is wrong": If the rm binary doesn't exist at the expected location
+        "error: returncode of cmd rm is non zero": If the email removal process fails
+    
+    Success Response:
+        "done": Returns when the email account has been successfully removed
+    """
     if request.method != 'POST':
         return make_response("Method not allowed", 405)
         
