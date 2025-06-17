@@ -18,6 +18,19 @@ def main():
         domain = request.form.get('domain')
         email = request.form.get('email')
 
+        # Check if input from form is None.
+        if password is None:
+            current_app.logger.error("password is None")
+            return "error: password is none"
+
+        if domain is None:
+            current_app.logger.error("domain is None")
+            return "error: domain is none"
+
+        if email is None:
+            current_app.logger.error("email is None")
+            return "error: email is none"
+
         # Validate password.
         if validators.is_password_allowed(password) is not True:
             current_app.logger.error("password validation failed")
