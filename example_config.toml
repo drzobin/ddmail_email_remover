@@ -2,6 +2,7 @@
     SECRET_KEY = 'change_me'
     PASSWORD_HASH = 'change_me'
     EMAIL_ACCOUNT_PATH = '/var/mail/vhosts/'
+    SRM_BIN = '/usr/bin/srm'
     [PRODUCTION.LOGGING]
     LOGLEVEL = 'INFO'
     LOG_TO_FILE = false
@@ -13,6 +14,7 @@
     SECRET_KEY = 'change_me'
     PASSWORD_HASH = 'change_me'
     EMAIL_ACCOUNT_PATH = '/tmp/mail/vhost/'
+    SRM_BIN = '/usr/bin/srm'
     [TESTING.LOGGING]
     LOGLEVEL = 'DEBUG'
     LOG_TO_FILE = true
@@ -24,6 +26,7 @@
     SECRET_KEY = 'change_me'
     PASSWORD_HASH = 'change_me'
     EMAIL_ACCOUNT_PATH = '/tmp/mail/vhost/'
+    SRM_BIN = '/usr/bin/srm'
     [DEVELOPMENT.LOGGING]
     LOGLEVEL = 'DEBUG'
     LOG_TO_FILE = true
