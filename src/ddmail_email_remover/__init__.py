@@ -10,26 +10,26 @@ from logging import FileHandler
 def create_app(config_file=None, test_config=None):
     """
     Create and configure an instance of the Flask application ddmail_email_remover.
-    
+
     This function is the application factory for the ddmail_email_remover application.
     It sets up logging, loads configuration from a TOML file, configures the application
     based on the current mode (PRODUCTION/TESTING/DEVELOPMENT), and registers blueprints.
-    
+
     Args:
         config_file (str, optional): Path to the TOML configuration file. Required for application to start.
         test_config (dict, optional): Test configuration dictionary that can override the default configuration.
                                      Not currently used but available for future test customization.
-    
+
     Returns:
         Flask: A configured Flask application instance.
-    
+
     Raises:
         SystemExit: If config_file is not provided or if MODE environment variable is not set correctly.
-    
+
     Environment Variables:
         MODE: Must be set to one of 'PRODUCTION', 'TESTING', or 'DEVELOPMENT' to determine which
               configuration section to use from the config file.
-    
+
     Configuration File Structure (TOML):
         The configuration file should contain sections for each mode with the following keys:
         - SECRET_KEY: Used for securely signing session cookies and other security needs
@@ -81,35 +81,16 @@ def create_app(config_file=None, test_config=None):
     # This allows for different configurations in production, testing, and development
     mode = os.environ.get('MODE')
     print("Running in MODE: " + str(mode))
-    if mode == "PRODUCTION":
+    if mode == "PRODUCTION" or mode == "TESTING" or mode == "DEVELOPMENT":
+
         # Load production configuration settings
-        app.config["SECRET_KEY"] = toml_config["PRODUCTION"]["SECRET_KEY"]
-        app.config["PASSWORD_HASH"] = toml_config["PRODUCTION"]["PASSWORD_HASH"]
-        app.config["EMAIL_ACCOUNT_PATH"] = toml_config["PRODUCTION"]["EMAIL_ACCOUNT_PATH"]
+        app.config["SECRET_KEY"] = toml_config[mode]["SECRET_KEY"]
+        app.config["PASSWORD_HASH"] = toml_config[mode]["PASSWORD_HASH"]
+        app.config["EMAIL_ACCOUNT_PATH"] = toml_config[mode]["EMAIL_ACCOUNT_PATH"]
 
         # Set up file-based logging for production environment
         # This logs to a specified file path rather than just the console
-        file_handler = FileHandler(filename=toml_config["PRODUCTION"]["LOGFILE"])
-        file_handler.setFormatter(logging.Formatter(log_format))
-        app.logger.addHandler(file_handler)
-    elif mode == "TESTING":
-        # Load testing configuration settings
-        app.config["SECRET_KEY"] = toml_config["TESTING"]["SECRET_KEY"]
-        app.config["PASSWORD_HASH"] = toml_config["TESTING"]["PASSWORD_HASH"]
-        app.config["EMAIL_ACCOUNT_PATH"] = toml_config["TESTING"]["EMAIL_ACCOUNT_PATH"]
-
-        # Set up file-based logging for testing environment
-        file_handler = FileHandler(filename=toml_config["TESTING"]["LOGFILE"])
-        file_handler.setFormatter(logging.Formatter(log_format))
-        app.logger.addHandler(file_handler)
-    elif mode == "DEVELOPMENT":
-        # Load development configuration settings
-        app.config["SECRET_KEY"] = toml_config["DEVELOPMENT"]["SECRET_KEY"]
-        app.config["PASSWORD_HASH"] = toml_config["DEVELOPMENT"]["PASSWORD_HASH"]
-        app.config["EMAIL_ACCOUNT_PATH"] = toml_config["DEVELOPMENT"]["EMAIL_ACCOUNT_PATH"]
-
-        # Set up file-based logging for development environment
-        file_handler = FileHandler(filename=toml_config["DEVELOPMENT"]["LOGFILE"])
+        file_handler = FileHandler(filename=toml_config[mode]["LOGFILE"])
         file_handler.setFormatter(logging.Formatter(log_format))
         app.logger.addHandler(file_handler)
     else:
