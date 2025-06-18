@@ -12,7 +12,7 @@ def test_main_wrong_password(client, app):
     incorrect password. The endpoint should return a 200 status code with a
     specific error message indicating the password was wrong.
     """
-    response_main_post = client.post("/", data={"password":"wrongpasswordAAAAAAAAAAA", "domain":"test.se", "email":"test@test.se"})
+    response_main_post = client.post("/", data={"password":"A"*24, "domain":"test.se", "email":"test@test.se"})
     assert response_main_post.status_code == 200
     assert b"error: wrong password" in response_main_post.data
 
