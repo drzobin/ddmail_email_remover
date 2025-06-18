@@ -3,6 +3,7 @@ import sys
 import toml
 from flask import Flask
 import logging
+import logging.handlers
 from logging.config import dictConfig
 from logging import FileHandler
 
@@ -88,11 +89,30 @@ def create_app(config_file=None, test_config=None):
         app.config["PASSWORD_HASH"] = toml_config[mode]["PASSWORD_HASH"]
         app.config["EMAIL_ACCOUNT_PATH"] = toml_config[mode]["EMAIL_ACCOUNT_PATH"]
 
-        # Set up file-based logging for production environment
-        # This logs to a specified file path rather than just the console
-        file_handler = FileHandler(filename=toml_config[mode]["LOGFILE"])
-        file_handler.setFormatter(logging.Formatter(log_format))
-        app.logger.addHandler(file_handler)
+        # Configure logging to file.
+        if toml_config[mode]["LOGGING"]["LOG_TO_FILE"] is True:
+            file_handler = FileHandler(filename=toml_config[mode]["LOGGING"]["LOGFILE"])
+            file_handler.setFormatter(logging.Formatter(log_format))
+            app.logger.addHandler(file_handler)
+
+        # Configure logging to syslog.
+        if toml_config[mode]["LOGGING"]["LOG_TO_SYSLOG"] is True:
+            syslog_handler = logging.handlers.SysLogHandler(address=toml_config[mode]["LOGGING"]["SYSLOG_SERVER"])
+            syslog_handler.setFormatter(logging.Formatter(log_format))
+            app.logger.addHandler(syslog_handler)
+
+        # Configure loglevel.
+        if toml_config[mode]["LOGGING"]["LOGLEVEL"] == "ERROR":
+            app.logger.setLevel(logging.ERROR)
+        elif toml_config[mode]["LOGGING"]["LOGLEVEL"] == "WARNING":
+            app.logger.setLevel(logging.WARNING)
+        elif toml_config[mode]["LOGGING"]["LOGLEVEL"] == "INFO":
+            app.logger.setLevel(logging.INFO)
+        elif toml_config[mode]["LOGGING"]["LOGLEVEL"] == "DEBUG":
+            app.logger.setLevel(logging.DEBUG)
+        else:
+            print("Error: you need to set LOGLEVEL to ERROR/WARNING/INFO/DEBUG")
+            sys.exit(1)
     else:
         # Exit if the MODE environment variable is not set to a recognized value
         print("Error: you need to set env variabel MODE to PRODUCTION/TESTING/DEVELOPMENT")
