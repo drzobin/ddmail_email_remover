@@ -108,7 +108,7 @@ def test_successful_email_deletion(mock_subprocess_run, mock_exists, client, app
 
     This test verifies that the application successfully processes a valid request
     to delete an email account. It mocks the subprocess call to simulate successful
-    execution of the rm command.
+    execution of the srm command with the doas wrapper.
     """
     # Configure mocks
     mock_exists.return_value = True
@@ -123,16 +123,16 @@ def test_successful_email_deletion(mock_subprocess_run, mock_exists, client, app
     assert response_main_post.status_code == 200
     assert b"done" in response_main_post.data
 
-    # Verify subprocess was called correctly
+    # Verify subprocess was called correctly with the expected command
     mock_subprocess_run.assert_called_once()
 
 
 @patch('os.path.exists')
-def test_rm_binary_not_found(mock_exists, client, app, password):
-    """Test missing rm binary
+def test_srm_binary_not_found(mock_exists, client, app, password):
+    """Test missing srm binary
 
     This test verifies that the application properly handles the case when
-    the rm binary is not found at the expected location. The endpoint should
+    the srm binary is not found at the expected location. The endpoint should
     return a specific error message.
     """
     # Configure mock
@@ -143,7 +143,7 @@ def test_rm_binary_not_found(mock_exists, client, app, password):
 
     # Verify response
     assert response_main_post.status_code == 200
-    assert b"error: rm binary location is wrong" in response_main_post.data
+    assert b"error: srm binary location is wrong" in response_main_post.data
 
 
 @patch('os.path.exists')
@@ -164,7 +164,7 @@ def test_subprocess_error(mock_subprocess_run, mock_exists, client, app, passwor
 
     # Verify response
     assert response_main_post.status_code == 200
-    assert b"error: returncode of cmd rm is non zero" in response_main_post.data
+    assert b"error: returncode of cmd srm is non zero" in response_main_post.data
 
 
 @patch('os.path.exists')
@@ -187,4 +187,4 @@ def test_subprocess_nonzero_return(mock_subprocess_run, mock_exists, client, app
 
     # Verify response
     assert response_main_post.status_code == 200
-    assert b"error: returncode of cmd rm is non zero" in response_main_post.data
+    assert b"error: returncode of cmd srm is non zero" in response_main_post.data
