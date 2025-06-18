@@ -43,9 +43,11 @@ def pytest_sessionstart(session):
 def app(config_file):
     """Create and configure a new app instance for each test."""
     # Create the app with common test config
-        # Create the app with common test config
     app = create_app(config_file = config_file)
-    app.config.update({"TESTING": True,})
+    app.config.update({
+        "TESTING": True,
+        "SRM_BIN": "/usr/bin/srm"  # Add SRM_BIN to test configuration
+    })
 
     yield app
 
