@@ -110,7 +110,7 @@ def main() -> Response:
     # Remove email folder from hdd.
     try:
         output = subprocess.run(
-                ["/usr/bin/doas", "-u", "vmail", srm, "-zr", email_path],
+                ["/usr/bin/doas", "-u", "vmail", srm, "-zrl", email_path],
                 check=True
                 )
         if output.returncode != 0:
